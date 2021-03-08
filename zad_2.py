@@ -9,3 +9,5 @@ def pravac(x,y,x2,y2):
     print (f"y = {nagib}x {sl_koeficjent}")
 
 pravac(12,23,11,64)
+
+print("Hello world")
