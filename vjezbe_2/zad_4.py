@@ -74,7 +74,7 @@ def meta(brzina,kut,radijus,p,q):
                 print("meta je pogođena")
                 break
             else:
-                udaljenost = udaljenost - (radijus**2)
+                udaljenost = np.sqrt(udaljenost) - (radijus)
                 udaljenosti.append(udaljenost)
     if len(udaljenosti)==9999:
         udaljenosti.sort()
