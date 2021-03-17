@@ -73,7 +73,7 @@ def domet(brzina,kut):
 
 def max_brzina(brzina,kut):
     max_brzina = brzina  #maksimalna brzina će biti jednaka početnoj ako tijekom gibanja na tijelo ne djeluje neka dodatna sila
-    return max_brzina
+    print(max_brzina)
 
 def meta(brzina,kut,radijus,p,q):
     polozaji_h = []
