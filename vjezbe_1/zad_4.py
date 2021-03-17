@@ -8,7 +8,10 @@ def kruznica(x,y,p,q,r):
         print("Točka se nalazi unutar kružnice")
     else:
         print("Točka se nalazi van kružnice")
-    
+        udaljenost = np.sqrt((((x-p)**2) + ((y-q)**2))) - (r)
+        udaljenost = round(udaljenost,2)
+        print(f"udaljenost od kruznice je {udaljenost}")
+
     kruznica = plt.Circle((p,q),r, color = "r")
     tocka = plt.Circle((x,y),0.2, color = "black")
     fig, ax = plt.subplots()
@@ -24,4 +27,4 @@ def kruznica(x,y,p,q,r):
         naziv = input("Unesite naziv: ")
         plt.savefig(f"{naziv}.pdf")
 
-kruznica(1.31,5.323,1.3143,0.31,5.24424)
+kruznica(1.31,5.323,1.3143,0.31,4.24424)
