@@ -83,7 +83,7 @@ def meta(brzina,kut,radijus,p,q):
     brzina_y = np.sin(kut) * brzina
     brzina_x = np.cos(kut) * brzina
     n = 1000000
-    dt = 0.0001 #jako puno dijelica da se dobije preciznija slika
+    dt = 0.0001 #jako puno djelica da se dobije preciznija slika
     grav_konst = 9.81
     polozaj_y = 0
     polozaj_x = 0
