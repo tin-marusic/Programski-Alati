@@ -28,10 +28,12 @@ def kosi_hitac(brzina,kut):
     plt.ylabel('visina(m)')
     plt.show()
 
+
 def max_visina(brzina,kut):
     kut = kut * pi / 180
     brzina_y = np.sin(kut) * brzina
     max_visina1 = (brzina_y**2)/(2*9.81)
+    print(max_visina1)
     return max_visina1 
 
 def domet(brzina,kut):
@@ -40,6 +42,7 @@ def domet(brzina,kut):
     brzina_x = np.cos(kut) * brzina
     vrijeme = (brzina_y*2) / 9.81
     domet = brzina_x * vrijeme
+    print(domet)
     return domet
 
 def max_brzina(brzina,kut):

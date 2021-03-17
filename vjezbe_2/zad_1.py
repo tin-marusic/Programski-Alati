@@ -40,3 +40,4 @@ def jednoliko_gibanje(sila,masa):
     plt.xlabel('vrijeme(s)')
     plt.ylabel('polozaj(m)')
     plt.show()
+
