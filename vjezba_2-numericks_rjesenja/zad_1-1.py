@@ -50,4 +50,3 @@ def jednoliko_gibanje(sila,masa):
     plt.ylabel('polozaj(m)')
     plt.show()
 
-jednoliko_gibanje(5,5)
