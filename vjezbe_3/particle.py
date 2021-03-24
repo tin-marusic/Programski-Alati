@@ -18,6 +18,10 @@ class particle:
         del self.kut
         del self.x0
         del self.y0
+        del self.vx
+        del self.vy
+        del self.pomak_x
+        del self.pomak_y
 
     def __move(self,dt):
         self.vy = self.vy - 9.81*dt
