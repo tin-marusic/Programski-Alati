@@ -31,11 +31,12 @@ class particle:
         self.pomak_y.append(self.y0)
 
     def range(self,dt):
+        pocetni_polozaj = self.x0
         while True:
             self.__move(dt)
             if self.y0 <= 0:
                 break
-        domet = self.pomak_x[-1]
+        domet = self.pomak_x[-1] - pocetni_polozaj
         return domet
 
     def plot_trajectory(self):
