@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt 
 import numpy as np
-from math import pi
+from math import pi , sqrt
 
 def kosi_hitac(brzina,kut):
     polozaji_h = []
@@ -71,9 +71,22 @@ def domet(brzina,kut):
             print(f"najveca domet je: {polozaj_max_x}")
             break
 
-def max_brzina(brzina,kut):
-    max_brzina = brzina  #maksimalna brzina će biti jednaka početnoj ako tijekom gibanja na tijelo ne djeluje neka dodatna sila
-    print(max_brzina)
+def max_speed(brzina,kut,y0):
+        dt = 0.001
+        brzina_max = 0
+        vy = np.sin(kut) * brzina
+        vx = np.cos(kut) * brzina
+        while True:
+            vy = vy - 9.81*dt
+            y0 = y0 + vy*dt
+            if y0 > 0:
+                if abs(vy) > brzina_max:
+                    brzina_max = vy
+            else:
+                break
+
+        max = sqrt((vx)**2 + (brzina_max)**2)
+        return max
 
 def meta(brzina,kut,radijus,p,q):
     polozaji_h = []
@@ -125,6 +138,3 @@ def meta(brzina,kut,radijus,p,q):
     plt.show()
     
     
-
-
-
