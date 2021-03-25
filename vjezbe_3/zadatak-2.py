@@ -25,9 +25,7 @@ def relativna_pogreska():
         p1.reset()
         vremena.append(dt)
         pogreska_postotak.append(pogreska)
-    p1 = prt.particle(10,60,0,0)
-    print(p1.range(0.0001))
-    print(pogreska_postotak[0])
+
     x_cord = [vremena]
     y_cord = [pogreska_postotak]
     plt.scatter(x_cord,y_cord,s=0.2)
