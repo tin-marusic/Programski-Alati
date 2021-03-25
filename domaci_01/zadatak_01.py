@@ -23,6 +23,22 @@ class particle:
         del self.pomak_x
         del self.pomak_y
 
+    def __move(self,dt):
+        self.vy = self.vy - 9.81*dt
+        self.x0 = self.x0 + self.vx * dt
+        self.pomak_x.append(self.x0)
+        self.y0 = self.y0 + self.vy * dt
+        self.pomak_y.append(self.y0)
+
+    def range(self,dt):
+        pocetni_polozaj = self.x0
+        while True:
+            self.__move(dt)
+            if self.y0 <= 0:
+                break
+        domet = self.pomak_x[-1] - pocetni_polozaj
+        return domet
+
     def total_time(self):
         dt = 0.001
         vrijeme = 0
