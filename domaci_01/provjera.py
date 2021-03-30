@@ -13,6 +13,6 @@ print(p1.velocity_to_hit_target(25,15,1))
 p1.reset()
 
 p1 = prt.particle(40,40,0,0)
-print(p1.angle_to_hit_target(25,15,4))
+print(p1.angle_to_hit_target(25,15,0.37))
 p1.reset()
 

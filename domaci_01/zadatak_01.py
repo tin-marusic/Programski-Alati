@@ -67,7 +67,7 @@ class particle:
         return max
 
     def velocity_to_hit_target(self,p,q,r):
-        dt = 0.1
+        dt = 0.05
         v = 0.1
         epsilon = 0.1
         a = 0
@@ -81,13 +81,18 @@ class particle:
             if y > 0:
                 x = x +  vx * dt
                 udaljenost = ((x-p)**2) + ((y-q)**2)
-                if udaljenost < (r**2 - epsilon):
-                    a = 1
-                    break
+                if r**2 < 0.25 :
+                    if udaljenost < (r**2 - epsilon): #epsilon dodan kako bi se izbjegla granicna vrijednost
+                        a = 1
+                        break
+                else:
+                    if udaljenost < r**2 :   #zbog premalog radijusa mora se ukloniti epsilon
+                        a = 1
+                        break
             else:
                 y = self.y0
                 x = self.x0
-                v = v + 0.1
+                v = v + 0.05
                 vx = v*m.cos(self.kut)
                 vy = v*m.sin(self.kut)
 
@@ -100,7 +105,7 @@ class particle:
             
     def angle_to_hit_target(self,p,q,r):
         v = self.v0
-        dt = 0.1
+        dt = 0.025
         epsilon = 0.1
         a = 0
         stupnjevi = 0.1
@@ -115,9 +120,14 @@ class particle:
             if y > 0:
                 x = x +  vx * dt
                 udaljenost = ((x-p)**2) + ((y-q)**2)
-                if udaljenost < (r**2 - epsilon):
-                    a = 1
-                    break
+                if r**2 < 0.25 :
+                    if udaljenost < (r**2 - epsilon): #epsilon dodan kako bi se izbjegla granicna vrijednost
+                        a = 1
+                        break
+                else:
+                    if udaljenost < r**2 :   #zbog premalog radijusa mora se ukloniti epsilon
+                        a = 1
+                        break
             else:
                 y = self.y0
                 x = self.x0
