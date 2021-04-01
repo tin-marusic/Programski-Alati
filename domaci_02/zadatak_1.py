@@ -81,17 +81,17 @@ class HarmonicOscillator:
         while True:
             if self.t1>10:
                 break
-            else:
+            else:                 #svaki put ponovo uvrstava u funkcije za sile kako bi dobio nove izose
                 if self.ime == 1:
                     self.elasticna_sila(self.k)
-                elif self.ime1 == 1 and self.ime2 == 1:
+                elif self.ime1 == 1 and self.ime2 == 1:      #slucaj ukoliko otpor zraka i sila teže djeluju istodobno
                     self.gravitacijska_sila(self.g)
                     self.otpor_zraka(self.Cx , self.s , self.Rho)           #lako se ubaci jos jedan uvjet ako se doda jos jedna sila
                 elif self.ime1 == 1:
                     self.gravitacijska_sila(self.g)
                 elif self.ime2 == 1:
                     self.otpor_zraka(self.Cx , self.s , self.Rho)
-                sila = self.zbroj_sila()
+                sila = self.zbroj_sila()  #zbraja sve sile koje trenutno djeluju na tijelo
                 self.opis_gibanja(sila,dt)
 
         x_cord = [self.t]
