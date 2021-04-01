@@ -32,7 +32,7 @@ class HarmonicOscillator:
             self.brzine.append(v)
             if t>10:
                 break
-        #return self.x , self.t
+        return self.x , self.t
 
     def plot(self,dt):
         self.opis_gibanja(dt)
@@ -61,9 +61,6 @@ class HarmonicOscillator:
     def analiticko_rjesenje(self,dt):
         pomak_analiticki = []
         vrijeme = []
-        vrijeme001 = []
-        vrijeme01 = []
-        dt_001 = []
         omega = m.sqrt(10)
         amp = 1
         vrije = 0
@@ -74,25 +71,23 @@ class HarmonicOscillator:
             vrijeme.append(vrije)
             if vrije>10:
                 break
-       # self.reset()
-        
-       # dt_001,vrijeme001.append(self.opis_gibanja(0.2))
-        #self.reset()
-        # self.opis_gibanja(0.1)
-        # vrijeme01 = self.t
-        #dt_01=self.x 
-        #self.reset()
-        #self.opis_gibanja(1)
-        #dt_1 = self.x
-        
-
+        self.reset()
+    
         fig = plt.figure()
         ax1 = fig.add_subplot(1,1,1)
         plt.plot(vrijeme,pomak_analiticki, c='b', label='analiticki')
-        #plt.plot(vrijeme001,dt_001, c='r',label='numericki')
-        #plt.plot(vrijeme01, dt_01, c='g',label='numericki')
-        #plt.plot(self.t, dt_1, c='black',label='numericki')
-        plt.xlabel('vrijeme')
-        plt.ylabel('pomak')
-        #plt.legend(loc='upper left')
+        dt_02,vrijeme02 = self.opis_gibanja(0.5)
+        #plt.plot(vrijeme02,dt_02, c='r',label='korak 0.5')
+        ax1.scatter(vrijeme02,dt_02,s=5 , c='r',label='korak 0.5')
+        self.reset()
+        dt_01,vrijeme01 = self.opis_gibanja(0.25)
+        plt.plot(vrijeme01, dt_01, c='g',label='korak 0.25')
+        self.reset()
+        dt_001,vrijeme001 = self.opis_gibanja(0.1)
+        ax1.scatter(vrijeme001, dt_001, s=3.5, c='black',label='korak 0.1')
+        self.reset()
+        plt.xlabel('vrijeme (s)')
+        plt.ylabel('pomak (m) ')
+        plt.legend(loc='upper right')
+        plt.title("Usporedba analitickog i numerickog rjesenja za razlicite korake")
         plt.show()
