@@ -1,7 +1,7 @@
 import math as m
 import matplotlib.pyplot as plt
 
-class HarmonicOscillator:
+class Grafovi:
     def __init__(self,v0,masa,x0):
         self.t1 = 0
         self.v = v0
