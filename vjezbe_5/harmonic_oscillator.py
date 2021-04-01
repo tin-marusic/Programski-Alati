@@ -32,6 +32,7 @@ class HarmonicOscillator:
             self.brzine.append(v)
             if t>10:
                 break
+        #return self.x , self.t
 
     def plot(self,dt):
         self.opis_gibanja(dt)
@@ -62,8 +63,8 @@ class HarmonicOscillator:
         vrijeme = []
         vrijeme001 = []
         vrijeme01 = []
-        dt_01 = []
-        omega = m.sqrt(0.1)
+        dt_001 = []
+        omega = m.sqrt(10)
         amp = 1
         vrije = 0
         while True:
@@ -73,27 +74,23 @@ class HarmonicOscillator:
             vrijeme.append(vrije)
             if vrije>10:
                 break
-        self.reset()
-        self.opis_gibanja(0.01)
-        dt_001 = self.x
-        vrijeme001 = self.t
-        self.reset()
-        self.opis_gibanja(0.1)
-        vrijeme01 = self.t
-        dt_01.append(self.x )
-        self.reset()
-        self.opis_gibanja(1)
-        dt_1 = self.x
-
-        print(dt_01)
-        print(dt_1)
-
+       # self.reset()
         
+       # dt_001,vrijeme001.append(self.opis_gibanja(0.2))
+        #self.reset()
+        # self.opis_gibanja(0.1)
+        # vrijeme01 = self.t
+        #dt_01=self.x 
+        #self.reset()
+        #self.opis_gibanja(1)
+        #dt_1 = self.x
+        
+
         fig = plt.figure()
         ax1 = fig.add_subplot(1,1,1)
         plt.plot(vrijeme,pomak_analiticki, c='b', label='analiticki')
-        plt.plot(vrijeme001, dt_001, c='r',label='numericki')
-        plt.plot(vrijeme01, dt_01, c='g',label='numericki')
+        #plt.plot(vrijeme001,dt_001, c='r',label='numericki')
+        #plt.plot(vrijeme01, dt_01, c='g',label='numericki')
         #plt.plot(self.t, dt_1, c='black',label='numericki')
         plt.xlabel('vrijeme')
         plt.ylabel('pomak')
