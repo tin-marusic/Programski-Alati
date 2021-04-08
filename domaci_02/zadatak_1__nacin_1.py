@@ -2,7 +2,7 @@ import math as m
 import matplotlib.pyplot as plt
 
 class Grafovi:
-    def __init__(self,v0,masa,x0,k=0):
+    def __init__(self,v0,masa,x0):
         self.t1 = 0
         self.v = v0
         self.m = masa
@@ -11,7 +11,7 @@ class Grafovi:
         self.x = []
         self.a = []
         self.brzine = []
-        self.k = k
+        self.k = 0
         self.g = 0
         self.Cx = 0
         self.s = 0
@@ -22,6 +22,7 @@ class Grafovi:
         self.sila1 = 0
         self.sila2 = 0
         self.sila3 = 0
+        self.polozaj = 0
 
     def reset(self):
         self.t.clear()
@@ -43,28 +44,6 @@ class Grafovi:
         del self.sila3
         del self.sila1
 
-    def opis_gibanja2(self,sila,dt , sila2 = 0 , sila3 = 0 ):
-            t = self.t1
-            v = self.v
-            k = self.k
-            x = self.x0
-            g = 9.81
-            m = self.m
-            self.sila1 = eval(sila)
-            if sila2 != 0:
-                self.sila2 = eval(sila2)
-            if sila3 != 0:
-                self.sila3 = eval(sila3)
-            sila1 = self.zbroj_sila()
-            a = sila1/self.m
-            self.v = self.v + a*dt
-            self.x0 = self.x0 + self.v * dt
-            self.t1 = self.t1 + dt
-            self.t.append(self.t1)
-            self.x.append(self.x0)
-            self.a.append(a)
-            self.brzine.append(self.v)
-
     def opis_gibanja(self,sila,dt):
         a = (sila)/self.m
         self.v = self.v + a*dt
@@ -84,15 +63,20 @@ class Grafovi:
     def  gravitacijska_sila(self,g):
         self.ime1 = 1
         self.g = g
-        self.sila2 = self.m * g
+        self.sila2 = -self.m * g         #gibanje u -y smjeru
         return self.m * g
 
     def otpor_zraka(self,Cx,S,Rho):
+        
         self.Cx = Cx
         self.s = S
         self.Rho = Rho
         self.ime2 = 1
-        a = -Cx*S*((Rho*(self.v**2))/2)   #minus jer ce otpor zraka uvijek bit suprotan od gibanja tijela
+        if self.polozaj > self.x0:
+            a = Cx*S*((Rho*(self.v**2))/2)      #plus jer je gibanje u -y sjeru
+        else:
+            a = -Cx*S*((Rho*(self.v**2))/2)     #minus jer je gibanje u +y sjeru
+        self.polozaj = self.x0
         self.sila3 = a
         return a
 
@@ -101,16 +85,19 @@ class Grafovi:
 
     def plot(self,dt,sila,sila2 = 0,sila3 = 0 ):
         while True:
-            if self.t1>10:
+            if self.t1>15:
                 break
             else:                 #svaki put ponovo uvrstava u funkcije za sile kako bi dobio nove izose
-                if self.ime == 1:
+                if self.ime1 == 1 and self.ime2 == 1:      #slucaj ukoliko otpor zraka i sila teže djeluju istodobno
+                    self.gravitacijska_sila(self.g)
+                    self.otpor_zraka(self.Cx , self.s , self.Rho)           
+                elif self.ime == 1 and self.ime2 == 1:      #slucaj ukoliko otpor zraka i elasticna sila djeluju istodobno
                     self.elasticna_sila(self.k)
-                elif self.ime1 == 1 and self.ime2 == 1:      #slucaj ukoliko otpor zraka i sila teže djeluju istodobno
-                    self.gravitacijska_sila(self.g)
-                    self.otpor_zraka(self.Cx , self.s , self.Rho)           #lako se ubaci jos jedan uvjet ako se doda jos jedna sila
+                    self.otpor_zraka(self.Cx , self.s , self.Rho)
+                elif self.ime == 1:
+                    self.elasticna_sila(self.k)
                 elif self.ime1 == 1:
-                    self.gravitacijska_sila(self.g)
+                    self.gravitacijska_sila(self.g)             #lako se ubaci jos jedan uvjet ako se doda jos jedna sila
                 elif self.ime2 == 1:
                     self.otpor_zraka(self.Cx , self.s , self.Rho)
                 sila = self.zbroj_sila()  #zbraja sve sile koje trenutno djeluju na tijelo
@@ -118,49 +105,24 @@ class Grafovi:
 
         x_cord = [self.t]
         y_cord = [self.x]
+        plt.subplot(3, 1, 1)
         plt.scatter(x_cord,y_cord,s=1)
         plt.xlabel('vrijeme (s)')
         plt.ylabel('pomak (m)')
-        plt.show()
-
+        
         x_cord = [self.t]
         y_cord = [self.brzine]
+        plt.subplot(3, 1, 2)
         plt.scatter(x_cord,y_cord,s=1)
         plt.xlabel('vrijeme (s)')
         plt.ylabel('brzina (m/s)')
-        plt.show()
-
+        
         x_cord = [self.t]
         y_cord = [self.a]
+        plt.subplot(3, 1, 3)
         plt.scatter(x_cord,y_cord,s=1)
         plt.xlabel('vrijeme (s)')
         plt.ylabel('akceleracijia (m/s**2)')
         plt.show()
 
-    def crtanje(self,dt,sila,sila2 = 0,sila3 = 0 ):
-        while True:
-                if self.t1>10:
-                    break
-                else:
-                    self.opis_gibanja2(sila,dt)
-
-        x_cord = [self.t]
-        y_cord = [self.x]
-        plt.scatter(x_cord,y_cord,s=1)
-        plt.xlabel('vrijeme (s)')
-        plt.ylabel('pomak (m)')
-        plt.show()
-
-        x_cord = [self.t]
-        y_cord = [self.brzine]
-        plt.scatter(x_cord,y_cord,s=1)
-        plt.xlabel('vrijeme (s)')
-        plt.ylabel('brzina (m/s)')
-        plt.show()
-
-        x_cord = [self.t]
-        y_cord = [self.a]
-        plt.scatter(x_cord,y_cord,s=1)
-        plt.xlabel('vrijeme (s)')
-        plt.ylabel('akceleracijia (m/s**2)')
-        plt.show()
+    
