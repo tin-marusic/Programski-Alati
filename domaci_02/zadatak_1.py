@@ -2,7 +2,7 @@ import math as m
 import matplotlib.pyplot as plt
 
 class Grafovi:
-    def __init__(self,v0,masa,x0):
+    def __init__(self,v0,masa,x0,k=0):
         self.t1 = 0
         self.v = v0
         self.m = masa
@@ -11,7 +11,7 @@ class Grafovi:
         self.x = []
         self.a = []
         self.brzine = []
-        self.k = 0
+        self.k = k
         self.g = 0
         self.Cx = 0
         self.s = 0
@@ -43,8 +43,15 @@ class Grafovi:
         del self.sila3
         del self.sila1
 
-    def opis_gibanja(self,sila,dt):
-            a = (sila)/self.m
+    def opis_gibanja2(self,sila,dt):
+            t = self.t1
+            v = self.v
+            k = self.k
+            x = self.x0
+            g = 9.81
+            m = self.m
+            sila1 = eval(sila)
+            a = sila1/self.m
             self.v = self.v + a*dt
             self.x0 = self.x0 + self.v * dt
             self.t1 = self.t1 + dt
@@ -52,6 +59,16 @@ class Grafovi:
             self.x.append(self.x0)
             self.a.append(a)
             self.brzine.append(self.v)
+
+    def opis_gibanja(self,sila,dt):
+        a = (sila)/self.m
+        self.v = self.v + a*dt
+        self.x0 = self.x0 + self.v * dt
+        self.t1 = self.t1 + dt
+        self.t.append(self.t1)
+        self.x.append(self.x0)
+        self.a.append(a)
+        self.brzine.append(self.v)
 
     def elasticna_sila(self , k):
         self.k = k
@@ -93,6 +110,34 @@ class Grafovi:
                     self.otpor_zraka(self.Cx , self.s , self.Rho)
                 sila = self.zbroj_sila()  #zbraja sve sile koje trenutno djeluju na tijelo
                 self.opis_gibanja(sila,dt)
+
+        x_cord = [self.t]
+        y_cord = [self.x]
+        plt.scatter(x_cord,y_cord,s=1)
+        plt.xlabel('vrijeme (s)')
+        plt.ylabel('pomak (m)')
+        plt.show()
+
+        x_cord = [self.t]
+        y_cord = [self.brzine]
+        plt.scatter(x_cord,y_cord,s=1)
+        plt.xlabel('vrijeme (s)')
+        plt.ylabel('brzina (m/s)')
+        plt.show()
+
+        x_cord = [self.t]
+        y_cord = [self.a]
+        plt.scatter(x_cord,y_cord,s=1)
+        plt.xlabel('vrijeme (s)')
+        plt.ylabel('akceleracijia (m/s**2)')
+        plt.show()
+
+    def crtanje(self,dt,sila):
+        while True:
+                if self.t1>10:
+                    break
+                else:
+                    self.opis_gibanja2(sila,dt)
 
         x_cord = [self.t]
         y_cord = [self.x]
