@@ -1,6 +1,5 @@
 import math as m
 import matplotlib.pyplot as plt
-
 class Grafovi:
     def __init__(self,v0,masa,x0,k=0,cx = 0 ,s = 0 , Rho = 0):
         self.t1 = 0
@@ -37,7 +36,7 @@ class Grafovi:
         del self.sila1
         del self.tocnost
 
-    def opis_gibanja(self,sila,dt , sila2 = 0 , sila3 = 0 ):
+    def opis_gibanja(self,sila,dt , sila2 , sila3 ):
         t = self.t1
         v = self.v
         k = self.k
@@ -51,16 +50,19 @@ class Grafovi:
             self.sila1 = eval(sila)        # "uvrstava" vrijednosti u string i vraca numericku vrijednost
         except :
             self.tocnost = True             #prekida while petlju 
+    
         try:
             if sila2 != 0:
                 self.sila2 = eval(sila2)
         except :
             self.tocnost = True
+
         try:
             if sila3 != 0:
                 self.sila3 = eval(sila3)
         except :
             self.tocnost = True
+
         sila1 = self.zbroj_sila()
         a = sila1/self.m
         self.v = self.v + a*dt
@@ -71,6 +73,7 @@ class Grafovi:
         self.a.append(a)
         self.brzine.append(self.v)
 
+
     def zbroj_sila(self):
         return self.sila1 + self.sila2 + self.sila3       #može se ubaciti beskonacno mnogo sila
 
@@ -80,7 +83,13 @@ class Grafovi:
             if self.t1>10:
                 break
             else:
-                self.opis_gibanja(sila,dt,sila2,sila3)
+                if type(sila)==str: 
+                    self.opis_gibanja(sila,dt,sila2,sila3)
+                else:
+                    print("Netočan unos,sila mora biti zadana u stringu!")
+                    self.tocnost = True
+                    
+
         if self.tocnost ==  False:          #crta grafove samo u slucaju kad su vrijednosti tocne
             x_cord = [self.t]
             y_cord = [self.x]
@@ -104,4 +113,4 @@ class Grafovi:
             plt.ylabel('akceleracijia (m/s**2)')
             plt.show()
         else:
-            print("Možete unositi samo predhodno definirane varijeble! Pazite na velika i mala slova!")
+             print("Možete unositi samo predhodno definirane varijeble! Pazite na velika i mala slova!")
