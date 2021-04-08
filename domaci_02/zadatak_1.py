@@ -43,14 +43,19 @@ class Grafovi:
         del self.sila3
         del self.sila1
 
-    def opis_gibanja2(self,sila,dt):
+    def opis_gibanja2(self,sila,dt , sila2 = 0 , sila3 = 0 ):
             t = self.t1
             v = self.v
             k = self.k
             x = self.x0
             g = 9.81
             m = self.m
-            sila1 = eval(sila)
+            self.sila1 = eval(sila)
+            if sila2 != 0:
+                self.sila2 = eval(sila2)
+            if sila3 != 0:
+                self.sila3 = eval(sila3)
+            sila1 = self.zbroj_sila()
             a = sila1/self.m
             self.v = self.v + a*dt
             self.x0 = self.x0 + self.v * dt
@@ -132,7 +137,7 @@ class Grafovi:
         plt.ylabel('akceleracijia (m/s**2)')
         plt.show()
 
-    def crtanje(self,dt,sila):
+    def crtanje(self,dt,sila,sila2 = 0,sila3 = 0 ):
         while True:
                 if self.t1>10:
                     break
