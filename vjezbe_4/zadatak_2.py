@@ -1,7 +1,8 @@
 import calculus as c
 import matplotlib.pyplot as plt
 
-iznosi_pravkutno = []
+iznosi_pravkutno_donji = []
+iznosi_pravkutno_gornji = []
 iznosi_trapezno = []
 iznosi_analiticki = []
 broj_podjela = []
@@ -10,8 +11,8 @@ for i in range (19):
         broj_podjela.append(i)
 
         g,d = c.integral_pravokutnik(c.f1,8,15,i)
-        iznos_pravokutno = (g+d)/2          #ovako izracunat iznos integracije pravokutnom metodom se poklapa sa trapeznom
-        iznosi_pravkutno.append(iznos_pravokutno)
+        iznosi_pravkutno_gornji.append(g)
+        iznosi_pravkutno_donji.append(d)
 
         iznos_trapezno = c.integral_trapez(c.f1,8,15,i)
         iznosi_trapezno.append(iznos_trapezno)
@@ -22,7 +23,8 @@ for i in range (19):
 
 fig = plt.figure()
 ax1 = fig.add_subplot(1,1,1)
-plt.plot(broj_podjela,iznosi_pravkutno,c='b',linewidth = 4, label='numericki pravokutno')
+plt.plot(broj_podjela,iznosi_pravkutno_donji,c='b',linewidth = 1, label='numericki pravokutno donje međe')
+plt.plot(broj_podjela,iznosi_pravkutno_gornji,c='m',linewidth = 1, label='numericki pravokutno gornje međe')
 plt.plot(broj_podjela,iznosi_trapezno,c='r',label='numericki trapezno')
 plt.plot(broj_podjela,iznosi_analiticki, c='g', label='analiticki')
 plt.xlabel('broj podjela')
