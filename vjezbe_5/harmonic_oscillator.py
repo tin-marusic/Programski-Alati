@@ -10,6 +10,7 @@ class HarmonicOscillator:
         self.x = []
         self.a = []
         self.brzine = []
+        self.period = []
 
     def reset(self):
         self.t.clear()
@@ -18,10 +19,24 @@ class HarmonicOscillator:
         self.a.clear()
 
     def opis_gibanja(self,dt):
+        self.period.clear()
         t = 0
         v = self.v
         x = self.x0
         while True:
+            if dt>0.05:
+                if self.x0 - 0.5 < x and self.x0 + 0.5 > x:
+                    self.period.append(t) 
+            elif dt>0.009:
+                if self.x0 - 0.02 < x and self.x0 + 0.02 > x:
+                    self.period.append(t) 
+            elif dt>0.001:
+                if self.x0 - 0.005 < x and self.x0 + 0.005 > x:
+                    self.period.append(t) 
+            else: 
+                if self.x0 - 0.0015< x and self.x0 + 0.0015 > x:
+                    self.period.append(t)
+
             a = (-self.k*x)/self.m
             v = v + a*dt
             x = x + v * dt
@@ -84,10 +99,53 @@ class HarmonicOscillator:
         plt.plot(vrijeme01, dt_01, c='g',label='korak 0.25')
         self.reset()
         dt_001,vrijeme001 = self.opis_gibanja(0.1)
-        ax1.scatter(vrijeme001, dt_001, s=3.5, c='black',label='korak 0.1')
+        ax1.scatter(vrijeme001, dt_001, s=5, c='black',label='korak 0.1')
         self.reset()
         plt.xlabel('vrijeme (s)')
         plt.ylabel('pomak (m) ')
         plt.legend(loc='upper right')
         plt.title("Usporedba analitickog i numerickog rjesenja za razlicite korake")
         plt.show()
+
+
+    def period_titranja(self,dt):
+        self.opis_gibanja(dt)
+        try:
+            period = 2*(self.period[1] - self.period[0]) 
+        except:
+            period = f"Period nije moguće izračunati za interval {dt}s!"
+        return period
+            
+        
+
+    def graf_prikaz(self):
+        x1 = (self.period_titranja(1))
+        x2 = (self.period_titranja(0.5))
+        x3 = (self.period_titranja(0.1))
+        x4 = (self.period_titranja(0.01))
+        x5 = (self.period_titranja(0.005))
+        x6 = (self.period_titranja(0.001))
+        x7 = (self.period_titranja(0.0005))
+        period_analiticki = 2*m.pi * m.sqrt(self.m/self.k)
+
+        fig = plt.figure() 
+        column_labels=["dt (sekunde)", "Period (sekunde)"]
+        data=[["Period analiticki",period_analiticki],
+             [1,x1],
+             [0.5,x2],
+             [0.1,x3],
+             [0.01,x4],
+             [0.005,x5],
+             [0.001,x6],
+             [0.0005,x7]
+             ]
+
+        tablica = plt.table(cellText=data,
+                            colWidths=[0.5] * 2 ,
+                            colLabels=column_labels,
+                            loc='center',
+                            colColours =["yellow"] *2 )
+        tablica.auto_set_font_size(False)
+        tablica.set_fontsize(15)
+        plt.show()
+
