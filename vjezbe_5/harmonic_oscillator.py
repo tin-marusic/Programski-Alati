@@ -21,21 +21,26 @@ class HarmonicOscillator:
     def opis_gibanja(self,dt):
         self.period.clear()
         t = 0
+        t1 = 0 
         v = self.v
         x = self.x0
         while True:
             if dt>0.05:
                 if self.x0 - 0.5 < x and self.x0 + 0.5 > x:
-                    self.period.append(t) 
+                    t1 = t - t1
+                    self.period.append(t1) 
             elif dt>0.009:
                 if self.x0 - 0.02 < x and self.x0 + 0.02 > x:
-                    self.period.append(t) 
+                    t1 = t - t1
+                    self.period.append(t1) 
             elif dt>0.001:
                 if self.x0 - 0.005 < x and self.x0 + 0.005 > x:
-                    self.period.append(t) 
+                    t1 = t - t1
+                    self.period.append(t1) 
             else: 
                 if self.x0 - 0.0015< x and self.x0 + 0.0015 > x:
-                    self.period.append(t)
+                    t1 = t - t1
+                    self.period.append(t1)
 
             a = (-self.k*x)/self.m
             v = v + a*dt
@@ -105,7 +110,7 @@ class HarmonicOscillator:
         plt.ylabel('pomak (m) ')
         plt.legend(loc='upper right')
         plt.title("Usporedba analitickog i numerickog rjesenja za razlicite korake")
-        plt.show()
+        plt.show() 
 
 
     def period_titranja(self,dt):
@@ -118,7 +123,7 @@ class HarmonicOscillator:
             
         
 
-    def graf_prikaz(self):
+    def graf_prikaz(self,dt):
         x1 = (self.period_titranja(1))
         x2 = (self.period_titranja(0.5))
         x3 = (self.period_titranja(0.1))
@@ -149,3 +154,18 @@ class HarmonicOscillator:
         tablica.set_fontsize(15)
         plt.show()
 
+        promjena = dt
+        pogreske = []
+        vremena = []
+        while dt<1:
+            period = self.period_titranja(dt)
+            if type(period) == float :
+                greska = ((period - period_analiticki)/period_analiticki)*100
+                pogreske.append(greska)
+                vremena.append(dt)
+            dt = dt + promjena
+
+        plt.xlabel('vrijeme (s)')
+        plt.ylabel('relativna pogreska(%) ')
+        plt.plot(vremena,pogreske)
+        plt.show()
