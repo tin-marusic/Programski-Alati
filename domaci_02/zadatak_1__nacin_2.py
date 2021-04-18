@@ -86,6 +86,7 @@ class Grafovi:
                 if type(sila)==str: 
                     self.opis_gibanja(sila,dt,sila2,sila3)
                 else:
+                    print("Unjeli ste silu kao: ",type(sila))
                     print("Netočan unos,sila mora biti zadana u stringu!")
                     self.tocnost = True
                     
