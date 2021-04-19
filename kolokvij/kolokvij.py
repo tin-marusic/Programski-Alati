@@ -66,18 +66,17 @@ class Vertikalni_Hitac:
             akc = sila_ukupna / m
             self.v0 = self.v0 + akc*dt 
             self.h0 = self.h0 + self.v0 * dt 
-            print(self.h0)
             self.vrijeme = self.vrijeme + dt
             self.polozaj = self.h0
             self.visine.append(self.h0)
             self.brzine.append(self.v0)
             self.vremena.append(self.vrijeme)
         max_visina = max(self.visine)
-        trajanje = max(self.vrijeme)
+        trajanje = max(self.vremena)
         return max_visina,trajanje
-        
-            
 
-    
+
+ 
+
 
 

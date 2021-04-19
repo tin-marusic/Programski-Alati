@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 
 p1 = kol.Vertikalni_Hitac(10,10)
 brzina,visina,vrijeme = p1.gibanje(0.01)
-p1.reset()
 
 def crtaj(h,v,t):
     plt.plot(t,h, c='b')
@@ -18,3 +17,5 @@ def crtaj(h,v,t):
     plt.show()
 
 crtaj(visina,brzina,vrijeme)
+
+p1.reset()
