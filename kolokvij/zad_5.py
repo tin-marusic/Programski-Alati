@@ -12,5 +12,3 @@ p1.reset()
 
 print(f"Maksimalna visina bez otpora je {visina},a sa otporom {visina_otpor}")
 print(f"Maksimalno trajanje bez otpora je {vrijeme},a sa otporom {trajanje_otpor}")
-
-
