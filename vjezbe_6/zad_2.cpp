@@ -12,7 +12,7 @@ bool Unutar(int circle_x, int circle_y,
 }
 int main()
 {
-    int x = 1, y = 1;
+    int x = 10, y = 1;
     int circle_x = 0, circle_y = 1, rad = 2;
     Unutar(circle_x, circle_y, rad, x, y) ? 
     cout << "Inside" : cout << "Outside";
