@@ -1,7 +1,4 @@
-//#include <iostream>
-//#include <list>
 #include <bits/stdc++.h>
-//#include <algorithm>
 using namespace std;
   
 bool inRange(unsigned low, unsigned high, unsigned x )
