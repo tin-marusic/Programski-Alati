@@ -55,7 +55,10 @@ class Projectile:
     def move_euler(self,dt):
     
         
-        Fx = -(self.vx**2 * self.povrsina * self.koeficjent * self.rho ) / 2   
+        if self.kut<m.pi/2:
+            Fx = -(self.vx**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        else:                                               #Ukoliko se giba u smjeru -x osi sila će biti pozitivna
+            Fx = (self.vx**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         Akc_x = Fx / self.masa
         self.vx = self.vx + Akc_x*dt
         self.polozaj_x = self.polozaj_x + self.vx * dt
@@ -75,19 +78,31 @@ class Projectile:
 
 
     def move_Runge_Kutta(self):
-        Fx = -(self.vx**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        if self.kut<m.pi/2:
+            Fx = -(self.vx**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        else:                                               #Ukoliko se giba u smjeru -x osi sila će biti pozitivna
+            Fx = (self.vx**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         Akc_x = Fx / self.masa
         k1vx = Akc_x * self.dt
         k1x = self.vx * self.dt
-        Fx = -((self.vx + 0.5*k1vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        if self.kut<m.pi/2:
+            Fx = -((self.vx + 0.5*k1vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        else:
+            Fx = ((self.vx + 0.5*k1vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         Akc_x = Fx / self.masa
         k2vx = Akc_x * self.dt
         k2x = (self.vx + 0.5 * k1vx) * self.dt
-        Fx = -((self.vx + 0.5*k2vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        if self.kut<m.pi/2:
+            Fx = -((self.vx + 0.5*k2vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        else:
+            Fx = ((self.vx + 0.5*k2vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         Akc_x = Fx / self.masa
         k3vx = Akc_x * self.dt
         k3x = (self.vx + 0.5 * k2vx) * self.dt
-        Fx = -((self.vx + 0.5*k3vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        if self.kut<m.pi/2:
+            Fx = -((self.vx + 0.5*k3vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        else:
+            Fx = ((self.vx + 0.5*k3vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         Akc_x = Fx / self.masa
         k4vx = Akc_x * self.dt
         k4x = (self.vx + k3vx) * self.dt
