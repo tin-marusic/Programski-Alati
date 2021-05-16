@@ -180,7 +180,7 @@ class Projectile:
                 self.pomak_y.clear()
                 self.polozaj_y = y
                 self.polozaj_x = x
-                stupnjevi = stupnjevi + 0.01
+                stupnjevi = stupnjevi + 0.1
                 kut = (stupnjevi/180)*m.pi
                 self.kut = kut
                 self.vx = v*m.cos(kut)

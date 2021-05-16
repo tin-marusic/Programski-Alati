@@ -4,3 +4,11 @@ import matplotlib.pyplot as plt
 p1 = p.Projectile(25,52,0.1,0,0,0.05,0.1,"kocka")
 print(p1.plot_meta(1,15,5))
 p1.reset()
+
+p1 = p.Projectile(25,52,0.1,0,0,0.05,0.1,"kocka")
+print(p1.plot_meta(1,-3,5))
+p1.reset()
+
+p1 = p.Projectile(25,52,0.1,0,0,0.05,0.1,"kocka")
+print(p1.plot_meta(1,0,10))
+p1.reset()
