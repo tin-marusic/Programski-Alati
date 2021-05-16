@@ -18,6 +18,8 @@ class Projectile:
         self.koeficjent = Cx
         self.rho = rho 
         self.dt = dt
+        self.polozaj = y0
+        self.polozaj_r = y0
         self.pomak_x = [x0]
         self.pomak_y = [y0]
 
@@ -26,10 +28,13 @@ class Projectile:
         del self.vy
         del self.polozaj_x
         del self.polozaj_y
+        del self.polozaj
         self.pomak_x.clear()
         self.pomak_y.clear()
 
     def reset(self):
+        del self.polozaj_r
+        del self.polozaj
         del self.kut
         del self.vx
         del self.vy
@@ -48,18 +53,26 @@ class Projectile:
         self.pomak_y.clear()
 
     def move_euler(self,dt):
-        Fx = -(self.vx**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+    
+        
+        Fx = -(self.vx**2 * self.povrsina * self.koeficjent * self.rho ) / 2   
         Akc_x = Fx / self.masa
         self.vx = self.vx + Akc_x*dt
         self.polozaj_x = self.polozaj_x + self.vx * dt
         self.pomak_x.append(self.polozaj_x)
 
-        Fy = -(self.vy**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        if self.polozaj > self.polozaj_y:         #provjerava je li gibanje u -y ili +y smjeru
+            Fy = (self.vy**2 * self.povrsina * self.koeficjent * self.rho ) / 2   
+        else:
+            Fy = -(self.vy**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         #pretpostavka da je tijelo pravilno tako da je povrsina u x i y smjeru jednaka
         Akc_y = Fy / self.masa
         self.vy = self.vy - 9.81*dt + Akc_y*dt
+        self.polozaj = self.polozaj_y
         self.polozaj_y = self.polozaj_y + self.vy * dt
         self.pomak_y.append(self.polozaj_y)
+        
+
 
     def move_Runge_Kutta(self):
         Fx = -(self.vx**2 * self.povrsina * self.koeficjent * self.rho ) / 2
@@ -82,19 +95,31 @@ class Projectile:
         self.polozaj_x = self.polozaj_x + (1/6)*(k1x + 2 * k2x + 2 * k3x + k4x)
         self.pomak_x.append(self.polozaj_x)
 
-        Fy = -(self.vy**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        if self.polozaj > self.polozaj_y:         
+            Fy = (self.vy**2 * self.povrsina * self.koeficjent * self.rho ) / 2   
+        else:
+            Fy = -(self.vy**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         Akc_y = Fy / self.masa - 9.81
         k1vy = Akc_y * self.dt
         k1y = self.vy * self.dt
-        Fy = -((self.vy + 0.5* k1vy)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        if self.polozaj > self.polozaj_y:         
+            Fy = ((self.vy + 0.5* k1vy)**2 * self.povrsina * self.koeficjent * self.rho ) / 2   
+        else:
+            Fy = -((self.vy + 0.5* k1vy)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         Akc_y = Fy / self.masa - 9.81
         k2vy = Akc_y * self.dt
         k2y = (self.vy + 0.5 * k1vy) * self.dt
-        Fy = -((self.vy + 0.5* k2vy)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        if self.polozaj > self.polozaj_y:         
+            Fy = ((self.vy + 0.5* k2vy)**2 * self.povrsina * self.koeficjent * self.rho ) / 2   
+        else:
+            Fy = -((self.vy + 0.5* k2vy)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         Akc_y = Fy / self.masa - 9.81
         k3vy = Akc_y * self.dt
         k3y = (self.vy + 0.5 * k2vy) * self.dt
-        Fy = -((self.vy + 0.5* k3vy)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        if self.polozaj > self.polozaj_y:         
+            Fy = ((self.vy + 0.5* k3vy)**2 * self.povrsina * self.koeficjent * self.rho ) / 2   
+        else:
+            Fy = -((self.vy + 0.5* k3vy)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         Akc_y = Fy / self.masa - 9.81
         k4vy = Akc_y * self.dt
         k4y = (self.vy + k3vy) * self.dt
@@ -123,6 +148,7 @@ class Projectile:
         self.vy = self.vyr
         self.polozaj_x = self.polozaj_x_r
         self.polozaj_y = self.polozaj_y_r
+        self.polozaj = self.polozaj_r
     
     def domet(self):
         x0 = self.polozaj_x
