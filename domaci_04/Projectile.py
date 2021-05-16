@@ -57,19 +57,31 @@ class Projectile:
         self.pomak_y.clear()
 
     def move_Runge_Kutta(self):
-        Fx = -(self.vx**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        if self.kut<m.pi/2:
+            Fx = -(self.vx**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        else:                                               #Ukoliko se giba u smjeru -x osi sila će biti pozitivna
+            Fx = (self.vx**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         Akc_x = Fx / self.masa
         k1vx = Akc_x * self.dt
         k1x = self.vx * self.dt
-        Fx = -((self.vx + 0.5*k1vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        if self.kut<m.pi/2:
+            Fx = -((self.vx + 0.5*k1vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        else:
+            Fx = ((self.vx + 0.5*k1vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         Akc_x = Fx / self.masa
         k2vx = Akc_x * self.dt
         k2x = (self.vx + 0.5 * k1vx) * self.dt
-        Fx = -((self.vx + 0.5*k2vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        if self.kut<m.pi/2:
+            Fx = -((self.vx + 0.5*k2vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        else:
+            Fx = ((self.vx + 0.5*k2vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         Akc_x = Fx / self.masa
         k3vx = Akc_x * self.dt
         k3x = (self.vx + 0.5 * k2vx) * self.dt
-        Fx = -((self.vx + 0.5*k3vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        if self.kut<m.pi/2:
+            Fx = -((self.vx + 0.5*k3vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
+        else:
+            Fx = ((self.vx + 0.5*k3vx)**2 * self.povrsina * self.koeficjent * self.rho ) / 2
         Akc_x = Fx / self.masa
         k4vx = Akc_x * self.dt
         k4x = (self.vx + k3vx) * self.dt
@@ -126,8 +138,8 @@ class Projectile:
         self.polozaj = self.polozaj_r
     
     def kugla(self,radijus):
-        self.povrsina = 2 * radijus**2 *m.pi
-        #kugla će uvijek u smjeru gibanja imati površinu polovice oplošja na koje će djelovati sila
+        self.povrsina = radijus**2 *m.pi
+        #kugla će uvijek u smjeru gibanja imati površinu jednaku površini kruga radijusa r na koje će djelovati sila
         #povrsina je jednaka i u x i y smjeru 
         x,y = self.Runge_Kutta()
         return x,y
@@ -152,6 +164,7 @@ class Projectile:
             exit()
 
     def meta(self,radijus,xm,ym):
+
         v = self.v0
         dt = self.dt
         epsilon = 0.1
@@ -189,15 +202,22 @@ class Projectile:
             if stupnjevi > 180:
                 print("Metu nije moguce pogoditi")
                 break
+        
 
         if izracun == True:
             return stupnjevi
 
     def plot_meta(self,r,x,y):
-        k = self.meta(r,x,y)
-        kruznica = plt.Circle((x,y),r, color = "r")
-        fig, ax = plt.subplots()
-        ax.add_patch(kruznica)
-        plt.plot(self.pomak_x,self.pomak_y,color = "b")
-        plt.show()
-        return k
+        try:
+            k = self.meta(r,x,y)
+            if type(k)==float:
+                kruznica = plt.Circle((x,y),r, color = "r")
+                fig, ax = plt.subplots()
+                ax.add_patch(kruznica)
+                plt.plot(self.pomak_x,self.pomak_y,color = "b")
+                plt.show()
+                return k
+        except OverflowError:
+            #Ukoliko se unesu podaci koji za python daju prevelika rješenja smatra se da metu nije moguće pogoditi
+            return "Metu nije moguće pogoditi"
+            
