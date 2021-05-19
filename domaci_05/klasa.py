@@ -129,3 +129,4 @@ class Electromagnetic:
         ax.set_title("Elektron i pozitron u magnetskom polju",fontsize = 14)
 
         plt.show()
+        
