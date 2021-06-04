@@ -1,6 +1,9 @@
 import numpy as np
 import math as m
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from mpl_toolkits.mplot3d import Axes3D
+ 
 
 class sun_earth:
     def __init__(self,m1,m2,v1,v2,cord1,cord2,vrijeme):
@@ -15,6 +18,7 @@ class sun_earth:
         self.polozaj02 = cord2
         self.polozaj2 = cord2
         self.dt = 36000
+        self.dio_dana = 0.417
         self.dan = 0
         self.G = 6.67 * (10 **-11 )
         self.polozaji1 = []
@@ -31,6 +35,7 @@ class sun_earth:
         self.polozaji2.clear()
 
     def reset(self):
+        del self.dio_dana
         del self.vrijeme
         del self.masa1
         del self.masa2
@@ -70,7 +75,7 @@ class sun_earth:
             self.polozaj2 = np.add(self.polozaj2 , self.brzina2 * self.dt)
             self.polozaji2.append(self.polozaj2)
 
-            self.dan = self.dan + 0.41
+            self.dan = self.dan + self.dio_dana
 
     def Runge_Kutta(self):
         while self.dan < self.vrijeme:
@@ -105,8 +110,8 @@ class sun_earth:
             self.brzina2 = self.brzina2 + (1/6)*(k1vz + 2 * k2vz + 2 * k3vz + k4vz)
             self.polozaj2 = self.polozaj2 + (1/6)*(k1z + 2 * k2z + 2 * k3z + k4z)
             self.polozaji2.append(self.polozaj2)
+            self.dan = self.dan + self.dio_dana
 
-            self.dan = self.dan + 0.41
     def liste(self,a,b):
         x_list1 = []
         y_list1 = []
@@ -152,4 +157,38 @@ class sun_earth:
         ax.set_zlabel('Z-os')
         ax.legend()
         plt.show()   #Nema veće razlike između Rk i Eulerovoe metode za isti dt
-          
+
+    def anima(self):
+        self.dio_dana = 1
+        self.dt = 86400              #smanjuje broj točaka radi bržeg kretanja animacije
+        self.vrijeme = self.vrijeme + 10
+        self.Runge_Kutta()
+        def func(num, dataSet, line):
+            line.set_data(dataSet[0:2, :num])    
+            line.set_3d_properties(dataSet[2, :num])
+            line.set_label("Putanja Zemlje")
+            legend = plt.legend()    
+            return line,legend
+        x_suncerk,y_suncerk,z_suncerk,x_zemljark,y_zemljark,z_zemljark = self.liste(self.polozaji1,self.polozaji2)
+        x_suncerk = np.array(x_suncerk)
+        y_suncerk = np.array(y_suncerk)
+        z_suncerk = np.array(z_suncerk)
+        x_zemljark = np.array(x_zemljark)
+        y_zemljark = np.array(y_zemljark)
+        z_zemljark = np.array(z_zemljark)
+        dataSet = np.array([x_zemljark,y_zemljark,z_zemljark])
+
+        numDataPoints = len(x_zemljark)
+        fig = plt.figure()
+        ax = Axes3D(fig)
+    
+        line = plt.plot(dataSet[0], dataSet[1], dataSet[2], lw=2, c='g')[0] 
+        ax.set_facecolor("black")
+        plt.axis('off')
+        ax.set_xlabel('x')
+        ax.set_ylabel('y')
+        ax.set_zlabel('z')
+        ax.scatter(x_suncerk ,y_suncerk , z_suncerk ,label="Sunce",s = 500, c = 'y')
+        line_ani = animation.FuncAnimation(fig, func, frames=numDataPoints, fargs=(dataSet,line), interval=1, blit=False)
+        plt.title("Kruženje zemlje oko sunca")
+        plt.show()
