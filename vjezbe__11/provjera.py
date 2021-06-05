@@ -5,4 +5,6 @@ p2 = z.sun_earth(1.989E30, 5.972E24,np.array([0,0,0]),np.array([29780,0,0]),np.a
 p2.plot()
 p2.restart()
 p2.anima()
+p2.restart()
+p2.anima2()
 p2.reset()

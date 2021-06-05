@@ -1,6 +1,7 @@
 import numpy as np
 import math as m
 import matplotlib.pyplot as plt
+import mpl_toolkits.mplot3d.axes3d as p3
 import matplotlib.animation as animation
 from mpl_toolkits.mplot3d import Axes3D
  
@@ -144,32 +145,89 @@ class sun_earth:
         return x_sunce,y_sunce,z_sunce,x_zemlja,y_zemlja,z_zemlja,x_zemljark,y_zemljark,z_zemljark
 
     def plot(self):
-        x_sunce,y_sunce,z_sunce,x_zemlja,y_zemlja,z_zemlja,x_zemljark,y_zemljark,z_zemljark = self.plot_data()
+        self.Runge_Kutta()
+        x_sunce,y_sunce,z_sunce,x_zemlja,y_zemlja,z_zemlja = self.liste(self.polozaji1,self.polozaji2)
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
         plt.plot(x_sunce, y_sunce, z_sunce, label="Sunce", c = 'y', marker='o')
         ax.scatter(x_sunce[0], y_sunce[0], z_sunce[0],s = 500, c = 'y')
-        ax.scatter(x_zemlja, y_zemlja, z_zemlja, label="Zemlja Euler",s = 0.5 , c = 'black')
-        ax.scatter(x_zemljark,y_zemljark,z_zemljark, label="Zemlja Runge-Kutta",s = 0.5 , c = 'm')
-        ax.scatter(x_zemlja[0], y_zemlja[0], z_zemlja[0],s = 200, c = 'g')
+        ax.scatter(x_zemlja, y_zemlja, z_zemlja, label="Putanja zemlje",s = 0.5 , c = 'black')
+        ax.scatter(x_zemlja[0], y_zemlja[0], z_zemlja[0],label="Zemlja",s = 200, c = 'g')
         ax.set_xlabel('X-os')
         ax.set_ylabel('Y-os')
         ax.set_zlabel('Z-os')
         ax.legend()
-        plt.show()   #Nema veće razlike između Rk i Eulerovoe metode za isti dt
+        max = plt.get_current_fig_manager()
+        max.full_screen_toggle()       #za izlazak iz full screena stisnuti "ctrl + f" ,a za izlazak iz programa "ctrl + w"
+        plt.show()   
 
     def anima(self):
         self.dio_dana = 1
         self.dt = 86400              #smanjuje broj točaka radi bržeg kretanja animacije
         self.vrijeme = self.vrijeme + 10
-        self.Runge_Kutta()
+        def func(num, dataSet, lines):
+            i = True
+            for line, data in zip(lines, dataSet):
+                line.set_data(data[0:2, :num])    
+                line.set_3d_properties(data[2, :num])
+                if i:
+                    line.set_label("Putanja Zemlje Runge-Kutta")
+                    line.set_color("w")
+                    i = False
+                else:
+                    line.set_label("Putanja Zemlje Euler")
+                legend = plt.legend()    
+            return lines,legend
+        x_sunce,y_sunce,z_sunce,x_zemlja,y_zemlja,z_zemlja,x_zemljark,y_zemljark,z_zemljark = self.plot_data()
+        x_suncerk = np.array(x_sunce)
+        y_suncerk = np.array(y_sunce)
+        z_suncerk = np.array(z_sunce)
+        x_zemljark = np.array(x_zemljark)
+        y_zemljark = np.array(y_zemljark)
+        z_zemljark = np.array(z_zemljark)
+        dataSet = np.array([[x_zemljark,y_zemljark,z_zemljark],[x_zemlja,y_zemlja,z_zemlja]])
+
+        numDataPoints = len(x_zemljark)
+        fig = plt.figure()
+        ax = Axes3D(fig)
+        lines = [ax.plot(dat[0, 0:1], dat[1, 0:1], dat[2, 0:1])[0] for dat in dataSet]
+        plt.rcParams['animation.html'] = 'html5'
+        plt.axis('off')
+        ax.set_xlabel('x')
+        ax.set_ylabel('y')
+        ax.set_zlabel('z')
+        ax.set_xlim(- 1.496E11, 1.496E11)
+        ax.set_ylim(- 1.496E11, 1.496E11)
+        ax.set_zlim(-1.1,1.1)
+        ax.set_facecolor("black")
+        ax.scatter(x_suncerk ,y_suncerk , z_suncerk ,label="Sunce",s = 500, c = 'y')
+        line_ani = animation.FuncAnimation(fig, func, frames=numDataPoints, fargs=(dataSet,lines), interval=1, blit=False) 
+        max = plt.get_current_fig_manager()
+        max.full_screen_toggle()       #za izlazak iz full screena stisnuti "ctrl + f" ,a za izlazak iz programa "ctrl + w"
+
+        plt.show()          #Nema veće razlike između Rk i Eulerovoe metode za isti dt
+
+    def anima2(self):
+        self.dio_dana = 1
+        self.dt = 86400              #smanjuje broj točaka radi bržeg kretanja animacije
+        self.vrijeme = self.vrijeme + 25 
+        self.Euler()
         def func(num, dataSet, line):
             line.set_data(dataSet[0:2, :num])    
             line.set_3d_properties(dataSet[2, :num])
-            line.set_label("Putanja Zemlje")
+            line.set_label("Zemlja")
+            line.set_marker("o")
+            line.set_markersize(8)
             legend = plt.legend()    
             return line,legend
         x_suncerk,y_suncerk,z_suncerk,x_zemljark,y_zemljark,z_zemljark = self.liste(self.polozaji1,self.polozaji2)
+        fig = plt.figure()
+        ax = Axes3D(fig)
+        ax.plot(x_zemljark, y_zemljark, z_zemljark, label="Putanja zemlje", c = 'w')
+        for i in range(3):   #smanjuje broj točaka u animaciji kako bi se mogla prikazati zemlja
+            del x_zemljark[::2]
+            del y_zemljark[::2]
+            del z_zemljark[::2]
         x_suncerk = np.array(x_suncerk)
         y_suncerk = np.array(y_suncerk)
         z_suncerk = np.array(z_suncerk)
@@ -179,9 +237,7 @@ class sun_earth:
         dataSet = np.array([x_zemljark,y_zemljark,z_zemljark])
 
         numDataPoints = len(x_zemljark)
-        fig = plt.figure()
-        ax = Axes3D(fig)
-    
+        
         line = plt.plot(dataSet[0], dataSet[1], dataSet[2], lw=2, c='g')[0] 
         ax.set_facecolor("black")
         plt.axis('off')
@@ -189,6 +245,8 @@ class sun_earth:
         ax.set_ylabel('y')
         ax.set_zlabel('z')
         ax.scatter(x_suncerk ,y_suncerk , z_suncerk ,label="Sunce",s = 500, c = 'y')
-        line_ani = animation.FuncAnimation(fig, func, frames=numDataPoints, fargs=(dataSet,line), interval=1, blit=False)
-        plt.title("Kruženje zemlje oko sunca")
+        line_ani = animation.FuncAnimation(fig, func, frames=numDataPoints, fargs=(dataSet,line), interval= 200, blit=False)
+        max = plt.get_current_fig_manager()
+        max.full_screen_toggle()       #za izlazak iz full screena stisnuti "ctrl + f" ,a za izlazak iz programa "ctrl + w"
+        
         plt.show()
