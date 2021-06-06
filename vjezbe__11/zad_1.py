@@ -179,12 +179,12 @@ class sun_earth:
                 legend = plt.legend()    
             return lines,legend
         x_sunce,y_sunce,z_sunce,x_zemlja,y_zemlja,z_zemlja,x_zemljark,y_zemljark,z_zemljark = self.plot_data()
-        x_suncerk = np.array(x_sunce)
-        y_suncerk = np.array(y_sunce)
-        z_suncerk = np.array(z_sunce)
-        x_zemljark = np.array(x_zemljark)
-        y_zemljark = np.array(y_zemljark)
-        z_zemljark = np.array(z_zemljark)
+        del x_zemljark[::2]
+        del y_zemljark[::2]
+        del z_zemljark[::2]
+        del x_zemlja[::2]
+        del y_zemlja[::2]
+        del z_zemlja[::2]
         dataSet = np.array([[x_zemljark,y_zemljark,z_zemljark],[x_zemlja,y_zemlja,z_zemlja]])
 
         numDataPoints = len(x_zemljark)
@@ -193,15 +193,12 @@ class sun_earth:
         lines = [ax.plot(dat[0, 0:1], dat[1, 0:1], dat[2, 0:1])[0] for dat in dataSet]
         plt.rcParams['animation.html'] = 'html5'
         plt.axis('off')
-        ax.set_xlabel('x')
-        ax.set_ylabel('y')
-        ax.set_zlabel('z')
         ax.set_xlim(- 1.496E11, 1.496E11)
         ax.set_ylim(- 1.496E11, 1.496E11)
         ax.set_zlim(-1.1,1.1)
         ax.set_facecolor("black")
-        ax.scatter(x_suncerk ,y_suncerk , z_suncerk ,label="Sunce",s = 500, c = 'y')
-        line_ani = animation.FuncAnimation(fig, func, frames=numDataPoints, fargs=(dataSet,lines), interval=1, blit=False) 
+        ax.scatter(x_sunce ,y_sunce , z_sunce ,label="Sunce",s = 500, c = 'y')
+        line_ani = animation.FuncAnimation(fig, func, frames=numDataPoints, fargs=(dataSet,lines), interval=1, blit=False,repeat=False) 
         max = plt.get_current_fig_manager()
         max.full_screen_toggle()       #za izlazak iz full screena stisnuti "ctrl + f" ,a za izlazak iz programa "ctrl + w"
 
@@ -228,24 +225,14 @@ class sun_earth:
             del x_zemljark[::2]
             del y_zemljark[::2]
             del z_zemljark[::2]
-        x_suncerk = np.array(x_suncerk)
-        y_suncerk = np.array(y_suncerk)
-        z_suncerk = np.array(z_suncerk)
-        x_zemljark = np.array(x_zemljark)
-        y_zemljark = np.array(y_zemljark)
-        z_zemljark = np.array(z_zemljark)
         dataSet = np.array([x_zemljark,y_zemljark,z_zemljark])
-
         numDataPoints = len(x_zemljark)
         
-        line = plt.plot(dataSet[0], dataSet[1], dataSet[2], lw=2, c='g')[0] 
+        line = ax.plot(dataSet[0], dataSet[1], dataSet[2], lw=2, c='g')[0] 
         ax.set_facecolor("black")
         plt.axis('off')
-        ax.set_xlabel('x')
-        ax.set_ylabel('y')
-        ax.set_zlabel('z')
         ax.scatter(x_suncerk ,y_suncerk , z_suncerk ,label="Sunce",s = 500, c = 'y')
-        line_ani = animation.FuncAnimation(fig, func, frames=numDataPoints, fargs=(dataSet,line), interval= 200, blit=False)
+        line_ani = animation.FuncAnimation(fig, func, frames=numDataPoints, fargs=(dataSet,line), interval= 200, blit=False,repeat=False)
         max = plt.get_current_fig_manager()
         max.full_screen_toggle()       #za izlazak iz full screena stisnuti "ctrl + f" ,a za izlazak iz programa "ctrl + w"
         
