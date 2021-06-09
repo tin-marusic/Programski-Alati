@@ -14,6 +14,7 @@ class Planets:
         self.c = (x["boja"])
         self.x_y_z = [self.x]
         self.akceleracija = np.array([0,0,0])
+        self.size = (x["size"])
 
 class Universe:
     def __init__(self, x,y,z=0,j=0,k=0):
@@ -107,66 +108,88 @@ class Universe:
                 del y_list[::2]
             x_liste.append(x_list)
             y_liste.append(y_list)
-                
-        axes.set_xlim(min(x_liste[4]), max(x_liste[4]))
-        axes.set_ylim(min(y_liste[4]), max(y_liste[4]))
-        axes.scatter(x_liste[0][-1],y_liste[0][-1],s = 500, c = "y" , label = "Sunce")
 
-        point1, = axes.plot([x_liste[1][0]],[y_liste[1][0]], 'go')
-        def ani1(coords):
-            point1.set_data([coords[0]],[coords[1]])
-            point1.set_label("Zemlja")
-            point1.set_color("g")
-            point1.set_marker("o")
-            point1.set_markersize(15)
+        axes.scatter(0,0,s = 500, c = "y" , label = "Sunce")
+
+        point, = axes.plot([x_liste[0][0]],[y_liste[0][0]], 'go')
+        def ani(coords):
+            point.set_data([coords[0]],[coords[1]])
+            point.set_label(self.planeti[0].label)
+            point.set_color(self.planeti[0].c)
+            point.set_marker("o")
+            point.set_markersize(self.planeti[0].size)
             legend = plt.legend()  
-            return point1,legend
-        def frames1():
-            for acc_11_pos, acc_12_pos in zip(x_liste[1], y_liste[1]):
+            return point,legend
+        def frames():
+            for acc_11_pos, acc_12_pos in zip(x_liste[0], y_liste[0]):
                 yield acc_11_pos, acc_12_pos
-        animation1 = FuncAnimation(fig, ani1, frames=frames1, interval=1)
+        animation = FuncAnimation(fig, ani, frames=frames, interval=1)
 
 
-        point2, = axes.plot([x_liste[2][0]],[y_liste[2][0]], 'go')
-        def ani2(coords):
-            point2.set_data([coords[0]],[coords[1]])
-            point2.set_label("Merkur")
-            point2.set_color("gray")
-            point2.set_marker("o")
-            point2.set_markersize(8)
-            return point2
-        def frames2():
-            for acc_11_pos, acc_12_pos in zip(x_liste[2], y_liste[2]):
-                yield acc_11_pos, acc_12_pos
-        animation2 = FuncAnimation(fig, ani2, frames=frames2, interval=1)
+        try:
+            point1, = axes.plot([x_liste[1][0]],[y_liste[1][0]], 'go')
+            def ani1(coords):
+                point1.set_data([coords[0]],[coords[1]])
+                point1.set_label(self.planeti[1].label)
+                point1.set_color(self.planeti[1].c)
+                point1.set_marker("o")
+                point1.set_markersize(self.planeti[1].size)
+                return point1
+            def frames1():
+                for acc_11_pos, acc_12_pos in zip(x_liste[1], y_liste[1]):
+                    yield acc_11_pos, acc_12_pos
+            animation1 = FuncAnimation(fig, ani1, frames=frames1, interval=1)
+        except:
+            pass
 
+        try:
+            point2, = axes.plot([x_liste[2][0]],[y_liste[2][0]], 'go')
+            def ani2(coords):
+                point2.set_data([coords[0]],[coords[1]])
+                point2.set_label(self.planeti[2].label)
+                point2.set_color(self.planeti[2].c)
+                point2.set_marker("o")
+                point2.set_markersize(self.planeti[2].size)
+                return point2
+            def frames2():
+                for acc_11_pos, acc_12_pos in zip(x_liste[2], y_liste[2]):
+                    yield acc_11_pos, acc_12_pos
+            animation2 = FuncAnimation(fig, ani2, frames=frames2, interval=1)
+        except:
+            pass
 
-        point3, = axes.plot([x_liste[3][0]],[y_liste[3][0]], 'go')
-        def ani3(coords):
-            point3.set_data([coords[0]],[coords[1]])
-            point3.set_label("Venera")
-            point3.set_color("orange")
-            point3.set_marker("o")
-            point3.set_markersize(10)  
-            return point3
-        def frames3():
-            for acc_11_pos, acc_12_pos in zip(x_liste[3], y_liste[3]):
-                yield acc_11_pos, acc_12_pos
-        animation3 = FuncAnimation(fig, ani3, frames=frames3, interval=1)
+        try:
+            point3, = axes.plot([x_liste[3][0]],[y_liste[3][0]], 'go')
+            def ani3(coords):
+                point3.set_data([coords[0]],[coords[1]])
+                point3.set_label(self.planeti[3].label)
+                point3.set_color(self.planeti[3].c)
+                point3.set_marker("o")
+                point3.set_markersize(self.planeti[3].size)  
+                return point3
+            def frames3():
+                for acc_11_pos, acc_12_pos in zip(x_liste[3], y_liste[3]):
+                    yield acc_11_pos, acc_12_pos
+            animation3 = FuncAnimation(fig, ani3, frames=frames3, interval=1)
+        except:
+            pass
 
+        try:
+            point4, = axes.plot([x_liste[4][0]],[y_liste[4][0]], 'go')
+            def ani4(coords):
+                point4.set_data([coords[0]],[coords[1]])
+                point4.set_label(self.planeti[4].label)
+                point4.set_color(self.planeti[4].c)
+                point4.set_marker("o")
+                point4.set_markersize(self.planeti[4].size)
+                return point4
+            def frames4():
+                for acc_11_pos, acc_12_pos in zip(x_liste[4], y_liste[4]):
+                    yield acc_11_pos, acc_12_pos
+            animation4 = FuncAnimation(fig, ani4, frames=frames4, interval=1)
 
-        point4, = axes.plot([x_liste[4][0]],[y_liste[4][0]], 'go')
-        def ani4(coords):
-            point4.set_data([coords[0]],[coords[1]])
-            point4.set_label("Mars")
-            point4.set_color("r")
-            point4.set_marker("o")
-            point4.set_markersize(12)
-            return point4
-        def frames4():
-            for acc_11_pos, acc_12_pos in zip(x_liste[4], y_liste[4]):
-                yield acc_11_pos, acc_12_pos
-        animation4 = FuncAnimation(fig, ani4, frames=frames4, interval=1)
+        except:
+            pass
 
         maximum = plt.get_current_fig_manager()
         maximum.full_screen_toggle()       #za izlazak iz full screena stisnuti "ctrl + f" ,a za izlazak iz programa "ctrl + w"
