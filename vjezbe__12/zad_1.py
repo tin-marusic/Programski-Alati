@@ -114,7 +114,8 @@ class Universe:
         point, = axes.plot([x_liste[0][0]],[y_liste[0][0]], 'go')
         def ani(coords):
             point.set_data([coords[0]],[coords[1]])
-            point.set_label(self.planeti[0].label)
+            if self.planeti[0].label != "Sunce":
+                point.set_label(self.planeti[0].label)
             point.set_color(self.planeti[0].c)
             point.set_marker("o")
             point.set_markersize(self.planeti[0].size)
@@ -130,7 +131,8 @@ class Universe:
             point1, = axes.plot([x_liste[1][0]],[y_liste[1][0]], 'go')
             def ani1(coords):
                 point1.set_data([coords[0]],[coords[1]])
-                point1.set_label(self.planeti[1].label)
+                if self.planeti[1].label != "Sunce":
+                    point1.set_label(self.planeti[1].label)
                 point1.set_color(self.planeti[1].c)
                 point1.set_marker("o")
                 point1.set_markersize(self.planeti[1].size)
@@ -146,7 +148,8 @@ class Universe:
             point2, = axes.plot([x_liste[2][0]],[y_liste[2][0]], 'go')
             def ani2(coords):
                 point2.set_data([coords[0]],[coords[1]])
-                point2.set_label(self.planeti[2].label)
+                if self.planeti[2].label != "Sunce":
+                    point2.set_label(self.planeti[2].label)
                 point2.set_color(self.planeti[2].c)
                 point2.set_marker("o")
                 point2.set_markersize(self.planeti[2].size)
@@ -162,7 +165,8 @@ class Universe:
             point3, = axes.plot([x_liste[3][0]],[y_liste[3][0]], 'go')
             def ani3(coords):
                 point3.set_data([coords[0]],[coords[1]])
-                point3.set_label(self.planeti[3].label)
+                if self.planeti[3].label != "Sunce":
+                    point3.set_label(self.planeti[3].label)
                 point3.set_color(self.planeti[3].c)
                 point3.set_marker("o")
                 point3.set_markersize(self.planeti[3].size)  
@@ -178,7 +182,8 @@ class Universe:
             point4, = axes.plot([x_liste[4][0]],[y_liste[4][0]], 'go')
             def ani4(coords):
                 point4.set_data([coords[0]],[coords[1]])
-                point4.set_label(self.planeti[4].label)
+                if self.planeti[4].label != "Sunce":
+                    point4.set_label(self.planeti[4].label)
                 point4.set_color(self.planeti[4].c)
                 point4.set_marker("o")
                 point4.set_markersize(self.planeti[4].size)

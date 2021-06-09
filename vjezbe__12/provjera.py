@@ -12,7 +12,7 @@ p1.anima()
 p1.reset()
 
 
-p1 = z.Universe("Sunce","Venera","Merkur","Mars","Zemlja")
+p1 = z.Universe("Venera","Sunce","Merkur","Mars","Zemlja")
 p1.plot()
 p1.anima()
 p1.reset()
