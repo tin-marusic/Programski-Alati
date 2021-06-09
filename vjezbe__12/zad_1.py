@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import rijecinci as r
 import math as m
+from matplotlib.animation import FuncAnimation
 
 class Planets:
     def __init__(self, x):
@@ -85,3 +86,89 @@ class Universe:
         max = plt.get_current_fig_manager()
         max.full_screen_toggle()       #za izlazak iz full screena stisnuti "ctrl + f" ,a za izlazak iz programa "ctrl + w"
         plt.show()   
+
+
+    def anima(self):
+        fig = plt.figure(figsize = (5,5))
+        axes = fig.add_subplot(111)
+        axes.set_facecolor("black")
+        x_liste = []
+        y_liste = []
+        for x in self.planeti:
+            x_list = []
+            y_list = []
+            for i in range(len(x.x_y_z)):
+                polozaj = x.x_y_z[i]
+                x_list.append(polozaj[0])
+                y_list.append(polozaj[1])
+            axes.plot(x_list,y_list,c = x.c)
+            for i in range(2):
+                del x_list[::2]
+                del y_list[::2]
+            x_liste.append(x_list)
+            y_liste.append(y_list)
+                
+        axes.set_xlim(min(x_liste[4]), max(x_liste[4]))
+        axes.set_ylim(min(y_liste[4]), max(y_liste[4]))
+        axes.scatter(x_liste[0][-1],y_liste[0][-1],s = 500, c = "y" , label = "Sunce")
+
+        point1, = axes.plot([x_liste[1][0]],[y_liste[1][0]], 'go')
+        def ani1(coords):
+            point1.set_data([coords[0]],[coords[1]])
+            point1.set_label("Zemlja")
+            point1.set_color("g")
+            point1.set_marker("o")
+            point1.set_markersize(15)
+            legend = plt.legend()  
+            return point1,legend
+        def frames1():
+            for acc_11_pos, acc_12_pos in zip(x_liste[1], y_liste[1]):
+                yield acc_11_pos, acc_12_pos
+        animation1 = FuncAnimation(fig, ani1, frames=frames1, interval=1)
+
+
+        point2, = axes.plot([x_liste[2][0]],[y_liste[2][0]], 'go')
+        def ani2(coords):
+            point2.set_data([coords[0]],[coords[1]])
+            point2.set_label("Merkur")
+            point2.set_color("gray")
+            point2.set_marker("o")
+            point2.set_markersize(8)
+            return point2
+        def frames2():
+            for acc_11_pos, acc_12_pos in zip(x_liste[2], y_liste[2]):
+                yield acc_11_pos, acc_12_pos
+        animation2 = FuncAnimation(fig, ani2, frames=frames2, interval=1)
+
+
+        point3, = axes.plot([x_liste[3][0]],[y_liste[3][0]], 'go')
+        def ani3(coords):
+            point3.set_data([coords[0]],[coords[1]])
+            point3.set_label("Venera")
+            point3.set_color("orange")
+            point3.set_marker("o")
+            point3.set_markersize(10)  
+            return point3
+        def frames3():
+            for acc_11_pos, acc_12_pos in zip(x_liste[3], y_liste[3]):
+                yield acc_11_pos, acc_12_pos
+        animation3 = FuncAnimation(fig, ani3, frames=frames3, interval=1)
+
+
+        point4, = axes.plot([x_liste[4][0]],[y_liste[4][0]], 'go')
+        def ani4(coords):
+            point4.set_data([coords[0]],[coords[1]])
+            point4.set_label("Mars")
+            point4.set_color("r")
+            point4.set_marker("o")
+            point4.set_markersize(12)
+            return point4
+        def frames4():
+            for acc_11_pos, acc_12_pos in zip(x_liste[4], y_liste[4]):
+                yield acc_11_pos, acc_12_pos
+        animation4 = FuncAnimation(fig, ani4, frames=frames4, interval=1)
+
+        maximum = plt.get_current_fig_manager()
+        maximum.full_screen_toggle()       #za izlazak iz full screena stisnuti "ctrl + f" ,a za izlazak iz programa "ctrl + w"
+
+        plt.show()
